@@ -1,0 +1,10 @@
+C:\Users\ortiz\source\repos\InventoryManagementSystem\InventoryManagementSystem\bin\Release\InventoryManagementSystem.exe.config
+C:\Users\ortiz\source\repos\InventoryManagementSystem\InventoryManagementSystem\bin\Release\InventoryManagementSystem.exe
+C:\Users\ortiz\source\repos\InventoryManagementSystem\InventoryManagementSystem\bin\Release\InventoryManagementSystem.pdb
+C:\Users\ortiz\source\repos\InventoryManagementSystem\InventoryManagementSystem\obj\Release\InventoryManagementSystem.csproj.AssemblyReference.cache
+C:\Users\ortiz\source\repos\InventoryManagementSystem\InventoryManagementSystem\obj\Release\InventoryManagementSystem.MainForm.resources
+C:\Users\ortiz\source\repos\InventoryManagementSystem\InventoryManagementSystem\obj\Release\InventoryManagementSystem.Properties.Resources.resources
+C:\Users\ortiz\source\repos\InventoryManagementSystem\InventoryManagementSystem\obj\Release\InventoryManagementSystem.csproj.GenerateResource.cache
+C:\Users\ortiz\source\repos\InventoryManagementSystem\InventoryManagementSystem\obj\Release\InventoryManagementSystem.csproj.CoreCompileInputs.cache
+C:\Users\ortiz\source\repos\InventoryManagementSystem\InventoryManagementSystem\obj\Release\InventoryManagementSystem.exe
+C:\Users\ortiz\source\repos\InventoryManagementSystem\InventoryManagementSystem\obj\Release\InventoryManagementSystem.pdb
