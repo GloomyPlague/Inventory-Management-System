@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -20,9 +23,6 @@ namespace InventoryManagementSystem
         private Label label1;
         private Label label2;
         private Label label3;
-        private Button button3;
-        private TextBox textBox1;
-        private Button button1;
         private Button button2;
         private Button button4;
         private System.Windows.Forms.Button buttonDelete;
@@ -39,11 +39,12 @@ namespace InventoryManagementSystem
         public MainForm()
         {
             InitializeComponent();
-            _items = new List<Item>();
-            _nextId = 1;
+            LoadItemsFromFile();
+            _nextId = _items.Any() ? _items.Max(i => i.Id) + 1 : 1;
             LoadItems();
             dataGridViewItems.SelectionChanged += dataGridViewItems_SelectionChanged;
         }
+
 
         private void LoadItems()
         {
@@ -51,7 +52,7 @@ namespace InventoryManagementSystem
             dataGridViewItems.DataSource = _items;
             if (dataGridViewItems.Rows.Count > 0)
             {
-                dataGridViewItems.Rows[0].Selected = true; // Ensure at least one row is selected
+                dataGridViewItems.Rows[0].Selected = true;
             }
         }
 
@@ -149,7 +150,6 @@ namespace InventoryManagementSystem
                 var selectedRow = dataGridViewItems.SelectedRows[0];
                 int rowIndex = selectedRow.Index;
 
-                // Ensure the row index is within valid range
                 if (rowIndex >= 0 && rowIndex < dataGridViewItems.Rows.Count)
                 {
                     var selectedItem = selectedRow.DataBoundItem as Item;
@@ -181,9 +181,6 @@ namespace InventoryManagementSystem
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItems)).BeginInit();
@@ -278,38 +275,11 @@ namespace InventoryManagementSystem
             this.label3.TabIndex = 9;
             this.label3.Text = "Price";
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(553, 95);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(55, 23);
-            this.button3.TabIndex = 12;
-            this.button3.Text = "Select";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(488, 97);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(28, 20);
-            this.textBox1.TabIndex = 13;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(522, 95);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(34, 23);
-            this.button1.TabIndex = 14;
-            this.button1.Text = "De-";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(491, 124);
+            this.button2.Location = new System.Drawing.Point(407, 264);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(34, 23);
+            this.button2.Size = new System.Drawing.Size(34, 38);
             this.button2.TabIndex = 16;
             this.button2.Text = "De-";
             this.button2.UseVisualStyleBackColor = true;
@@ -317,7 +287,7 @@ namespace InventoryManagementSystem
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(522, 124);
+            this.button4.Location = new System.Drawing.Point(433, 264);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(55, 38);
             this.button4.TabIndex = 15;
@@ -327,12 +297,9 @@ namespace InventoryManagementSystem
             // 
             // MainForm
             // 
-            this.ClientSize = new System.Drawing.Size(610, 356);
+            this.ClientSize = new System.Drawing.Size(500, 356);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button3);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -352,6 +319,36 @@ namespace InventoryManagementSystem
 
         }
 
+        private const string DataFilePath = "items.json";
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            SaveItems();
+            base.OnFormClosing(e);
+        }
+
+
+        private void SaveItems()
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            var json = JsonSerializer.Serialize(_items, options);
+            File.WriteAllText(DataFilePath, json);
+        }
+
+        private void LoadItemsFromFile()
+        {
+            if (File.Exists(DataFilePath))
+            {
+                var json = File.ReadAllText(DataFilePath);
+                _items = JsonSerializer.Deserialize<List<Item>>(json) ?? new List<Item>();
+            }
+            else
+            {
+                _items = new List<Item>();
+            }
+        }
+
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             if (dataGridViewItems.Rows.Count > 0)
@@ -363,18 +360,6 @@ namespace InventoryManagementSystem
         private void dataGridViewItems_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            int toSelect = Convert.ToInt32(textBox1.Text);
-            dataGridViewItems.Rows[toSelect - 1].Selected = true;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            int toSelect = Convert.ToInt32(textBox1.Text);
-            dataGridViewItems.Rows[toSelect - 1].Selected = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
