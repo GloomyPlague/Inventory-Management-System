@@ -1,6 +1,8 @@
 Inventory Management System
 This is a simple Windows Forms application written in C#. The purpose of the application is to manage an inventory of items. It allows users to add, update, and delete items in the inventory. Each item in the inventory has an ID, name, quantity, and price.
 
+![Screenshot 2024-07-30 093150](https://github.com/user-attachments/assets/f8b4e203-dbee-49fd-892b-fb732cf7fcf4)
+
 Key Features:
 Add Items: Users can add new items to the inventory by entering the item name, quantity, and price.
 Update Items: Users can select an existing item in the DataGridView, modify its details, and update the inventory.
@@ -12,13 +14,13 @@ Selection Handling: When an item is selected in the DataGridView, its details ar
 User Interface:
 DataGridView: Displays the list of items.
 TextBoxes: Allow the user to enter or modify the name, quantity, and price of an item.
-  
+
 Buttons:
 Add: Adds a new item to the inventory.
 Update: Updates the selected item's details.
 Delete: Deletes the selected item.
 Labels: Provide descriptions for the text boxes.
-  
+
 Program Flow:
 Initialization: The main form initializes the component, sets up event handlers, and loads the initial items into the DataGridView.
 Event Handling:
